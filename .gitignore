@@ -23,6 +23,7 @@
 .idea/**/*.iml
 .idea/**/contentModel.xml
 .idea/**/modules.xml
+.idea/.idea.Jumppopper.dir/*
 
 *.suo
 *.user
@@ -84,6 +85,7 @@ SourceArt/**/*.tga
 Binaries/*
 Plugins/*/Binaries/*
 Plugins/Developer/*/Binaries/*
+Plugins/Developer/RiderLink/*
 
 # Builds
 Build/*
