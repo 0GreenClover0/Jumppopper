@@ -19,7 +19,8 @@ void UBoxColliderComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
+
+	FTimerHandle TimerHandle;
 	TArray<AActor*> Actors;
 	GetOverlappingActors(Actors);
 
@@ -28,6 +29,11 @@ void UBoxColliderComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		if (actor->ActorHasTag("Player"))
 		{
 			GetOwner()->SetActorHiddenInGame(true);
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
+			{
+				GetOwner()->SetActorEnableCollision(false); 
+			}, 0.8f, false);
+			
 			IsCollision = true;
 		}
 	}
@@ -40,6 +46,7 @@ void UBoxColliderComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	if (TimeSinceCollision >= 2.5f)
 	{
 		GetOwner()->SetActorHiddenInGame(false);
+		GetOwner()->SetActorEnableCollision(true);
 		TimeSinceCollision = 0.f;
 		IsCollision = false;
 	}
