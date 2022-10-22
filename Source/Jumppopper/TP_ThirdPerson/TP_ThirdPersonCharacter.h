@@ -28,6 +28,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
 	float TurnRateGamepad;
 
+	void Respawn();
+
 protected:
 
 	/** Called for forwards/backward input */
@@ -66,6 +68,9 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 private:
+	UPROPERTY(EditAnywhere, Category = "Character")
+	float CharacterVelocity = 400.f;
+	
 	float MinTimeBetweenJumps = 0.f;
 	float TimeSinceLastJumped = 0.f;
 };

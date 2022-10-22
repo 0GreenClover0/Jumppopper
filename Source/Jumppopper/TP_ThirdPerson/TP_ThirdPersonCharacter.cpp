@@ -63,6 +63,7 @@ void ATP_ThirdPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Respawn", IE_Pressed, this, &ATP_ThirdPersonCharacter::Respawn);
 
 	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &ATP_ThirdPersonCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("Move Right / Left", this, &ATP_ThirdPersonCharacter::MoveRight);
@@ -142,4 +143,13 @@ void ATP_ThirdPersonCharacter::Tick(float DeltaSeconds)
 		Jump();
 		TimeSinceLastJumped = 0.f;
 	}
+
+	FVector PlayerLocation = GetActorLocation() + GetActorForwardVector() * CharacterVelocity * DeltaSeconds;
+	SetActorLocation(PlayerLocation);
 }
+
+void ATP_ThirdPersonCharacter::Respawn()
+{
+	SetActorLocation(FVector(-510.f, 670.f, 100.f));
+}
+
