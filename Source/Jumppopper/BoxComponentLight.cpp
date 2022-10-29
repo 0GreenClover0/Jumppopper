@@ -23,9 +23,13 @@ void UBoxComponentLight::TickComponent(float DeltaTime, ELevelTick TickType,
 
 	for (AActor* actor : Actors)
 	{
+		AMovingLightingPlatform* Platform = Cast<AMovingLightingPlatform>(GetOwner());
 		if (actor->ActorHasTag("Player"))
 		{
-				actor->SetActorLocation(FVector(3704, 2820, 510));
+					if (Platform->GetIsLight())
+					{
+						actor->SetActorLocation(FVector(3704, 2820, 510));
+					}
 		}
 	}
 	

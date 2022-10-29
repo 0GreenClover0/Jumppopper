@@ -14,7 +14,6 @@ AMovingLightingPlatform::AMovingLightingPlatform()
 	RootComponent = StaticMeshComponent;
 	OnMaterial = CreateDefaultSubobject<UMaterial>(TEXT("OnMaterial"));
 	OffMaterial = CreateDefaultSubobject<UMaterial>(TEXT("OffMaterial"));
-
 }
 
 // Called when the game starts or when spawned
@@ -22,7 +21,7 @@ void AMovingLightingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 	StartLocation = GetActorLocation() - Offset;
-	GetWorldTimerManager().SetTimer(LightRateHandle,this, &AMovingLightingPlatform::checkLight, LightRate, true);
+	GetWorldTimerManager().SetTimer(LightRateHandle,this, &AMovingLightingPlatform::CheckLight, LightRate, true);
 }
 
 // Called every frame
@@ -44,14 +43,14 @@ void AMovingLightingPlatform::Tick(float DeltaTime)
 
 }
 
-bool AMovingLightingPlatform::GetIsLight()
+bool AMovingLightingPlatform::GetIsLight() const
 {
 	return IsLight;
 }
 
-void AMovingLightingPlatform::checkLight()
+void AMovingLightingPlatform::CheckLight()
 {
-	if (!IsLight)
+	if (!GetIsLight())
 	{
 		StaticMeshComponent->SetMaterial(0, OffMaterial);
 		IsLight = true;

@@ -22,7 +22,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	bool GetIsLight();
+	UFUNCTION()
+	bool GetIsLight() const;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Moving Platform")
@@ -41,9 +42,11 @@ private:
 	UMaterial* OffMaterial;
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMeshComponent;
-
+	
 	FTimerHandle LightRateHandle;
 	bool IsLight = false;
-	void checkLight();
+
+	UFUNCTION()
+	void CheckLight();
 
 };
