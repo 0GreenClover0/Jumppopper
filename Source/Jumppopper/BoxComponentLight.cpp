@@ -20,17 +20,17 @@ void UBoxComponentLight::TickComponent(float DeltaTime, ELevelTick TickType,
 	
 	TArray<AActor*> Actors;
 	GetOverlappingActors(Actors);
+	AMovingLightingPlatform* Platform = Cast<AMovingLightingPlatform>(GetOwner());
 
-	for (AActor* actor : Actors)
+	if (Platform->GetIsLight())
 	{
-		AMovingLightingPlatform* Platform = Cast<AMovingLightingPlatform>(GetOwner());
-		if (actor->ActorHasTag("Player"))
-		{
-					if (Platform->GetIsLight())
-					{
-						actor->SetActorLocation(FVector(3704, 2820, 510));
-					}
-		}
+		Platform->SetActorHiddenInGame(true);
+		Platform->SetActorEnableCollision(false);
+	}
+	else if (!Platform->GetIsLight())
+	{
+		Platform->SetActorHiddenInGame(false);
+		Platform->SetActorEnableCollision(true);
 	}
 	
 }

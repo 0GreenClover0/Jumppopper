@@ -12,8 +12,6 @@ AMovingLightingPlatform::AMovingLightingPlatform()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	RootComponent = StaticMeshComponent;
-	OnMaterial = CreateDefaultSubobject<UMaterial>(TEXT("OnMaterial"));
-	OffMaterial = CreateDefaultSubobject<UMaterial>(TEXT("OffMaterial"));
 }
 
 // Called when the game starts or when spawned
@@ -22,6 +20,9 @@ void AMovingLightingPlatform::BeginPlay()
 	Super::BeginPlay();
 	StartLocation = GetActorLocation() - Offset;
 	GetWorldTimerManager().SetTimer(LightRateHandle,this, &AMovingLightingPlatform::CheckLight, LightRate, true);
+	Material = StaticMeshComponent->GetMaterial(0);
+	DynamicMaterial = UMaterialInstanceDynamic::Create(Material, this);
+	StaticMeshComponent->SetMaterial(0, DynamicMaterial);
 }
 
 // Called every frame
@@ -32,7 +33,6 @@ void AMovingLightingPlatform::Tick(float DeltaTime)
 	FVector CurrentLocation = GetActorLocation();
 	CurrentLocation += PlatformVelocity * DeltaTime * CurrentLocation.GetSafeNormal();
 	SetActorLocation(CurrentLocation);
-
 	float Distance = FVector::Dist(StartLocation, CurrentLocation);
 
 	if (Distance > MovedDistance)
@@ -41,6 +41,17 @@ void AMovingLightingPlatform::Tick(float DeltaTime)
 		StartLocation = CurrentLocation;
 	}
 
+	if (!IsLight)
+	{
+		DynamicMaterial->GetScalarParameterValue(TEXT("Opacity"), Opacity);
+		float NewValue = FMath::FInterpConstantTo(Opacity, 0.0, DeltaTime, OpacityTime);
+		DynamicMaterial->SetScalarParameterValue(TEXT("Opacity"), NewValue);
+	}
+	else
+	{
+		DynamicMaterial->SetScalarParameterValue(TEXT("Opacity"), 0.9);
+	}
+	
 }
 
 bool AMovingLightingPlatform::GetIsLight() const
@@ -52,12 +63,10 @@ void AMovingLightingPlatform::CheckLight()
 {
 	if (!GetIsLight())
 	{
-		StaticMeshComponent->SetMaterial(0, OffMaterial);
 		IsLight = true;
 	}
-	else
+	else  //if lighting on 
 	{
-		StaticMeshComponent->SetMaterial(0, OnMaterial);
 		IsLight = false;
 	}
 }

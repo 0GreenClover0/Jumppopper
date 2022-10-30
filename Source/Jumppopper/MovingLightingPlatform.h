@@ -35,16 +35,20 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Moving Platform")
 	float LightRate = 2.f;
 	FVector	StartLocation;
+	float Opacity;
+	UPROPERTY(EditAnywhere)
+	float OpacityTime = 0.35;
 
 	UPROPERTY(EditAnywhere)
 	UMaterial* OnMaterial;
 	UPROPERTY(EditAnywhere)
-	UMaterial* OffMaterial;
-	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMeshComponent;
+
+	UMaterialInterface* Material;
+	UMaterialInstanceDynamic* DynamicMaterial;
 	
 	FTimerHandle LightRateHandle;
-	bool IsLight = false;
+	bool IsLight = true;
 
 	UFUNCTION()
 	void CheckLight();

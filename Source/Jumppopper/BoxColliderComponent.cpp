@@ -50,8 +50,6 @@ void UBoxColliderComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		TimeSinceCollision = 0.f;
 		IsCollision = false;
 	}
-
-	
 	
 }
 
